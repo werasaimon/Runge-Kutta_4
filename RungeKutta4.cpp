@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
-#include "freeglut/glut.h"
+#include <GL/freeglut.h>
 
 
 using namespace std;
@@ -478,7 +478,7 @@ void initCamera()
 void InitPhysicsParticles()
 {
 
-	const unsigned int _coutNb = 50;
+    const unsigned int _coutNb = 70;
 
 	TParticle *prevPart;
 	TParticle *prevParts[_coutNb];
@@ -525,7 +525,7 @@ void InitPhysicsParticles()
 void display()
 {
 
-    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+    glClearColor(0.1f, 0.1f, 0.1f, 0.0f);
 
 	glViewport(0, 0, Width , Height );
 
@@ -664,7 +664,7 @@ void mouseButton(int button, int state, int x, int y)
         	float rand_x = (100 - rand()%200);
         	float rand_y = (100 - rand()%200);
         	float rand_z = (100 - rand()%200);
-        	cout<< i << " ) suka-random: " << rand_x << "  " << rand_y << "  " << rand_z <<endl;
+            //cout<< i << " ) suka-random: " << rand_x << "  " << rand_y << "  " << rand_z <<endl;
         	DynamicGrid.mParticles[i]->mVelocity = DynamicGrid.mParticles[i]->mVelocity +  Vector3( rand_x , rand_y , rand_z ) * 0.1;
 		}
 	}
