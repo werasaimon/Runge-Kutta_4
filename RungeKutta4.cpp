@@ -21,6 +21,9 @@ using namespace std;
 
 #define EPSILON 0.0001
 
+
+
+
 class Vector3
 {
 
@@ -403,14 +406,40 @@ struct TPhysicsGridSimulate
 
 //=================================  Unit Test ==================================//
 
+float Width = 600;
+float Height = 400;
+
+void printtext(int x, int y, string String)
+{
+   //(x,y) is from the bottom left of the window
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0, Width, 0, Height, -1.0f, 1.0f);
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glPushAttrib(GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
+    glRasterPos2i(x,y);
+    for (int i=0; i<String.size(); i++)
+    {
+        glutBitmapCharacter(GLUT_BITMAP_9_BY_15, String[i]);
+    }
+    glPopAttrib();
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
+    glPopMatrix();
+}
+
 
 /// Camera value
 Vector3 mEye;
 Vector3 mCenter;
 Vector3 mUp;
 
-float Width = 600;
-float Height = 400;
+
 
 /// Physics value
 const Vector3 gravity(0,-20,0);
@@ -495,6 +524,10 @@ void display()
 {
 
 	glViewport(0, 0, Width , Height );
+
+
+
+
 	glLoadIdentity();
 
 	//	float aspect = 1.0;//Width / Height;
@@ -504,6 +537,7 @@ void display()
 	//
 	//	glMatrixMode(GL_PROJECTION);
 	//	gluPerspective( fov , aspect , zNear , zFar );
+
 
 
 	glMatrixMode(GL_MODELVIEW);
@@ -516,6 +550,16 @@ void display()
 
 	/// Render Physics Particles
 	DynamicGrid.Render();
+
+
+    /// Render Text
+    char string[64];
+    sprintf(string, "MOUSE_LEFT_RIGHT : Camera-control");
+    printtext(10,Height - 20,string);
+
+    string[64];
+    sprintf(string, "MOUSE_BUTTON_RIGHT : Random-Velocity");
+    printtext(10,Height - 40,string);
 
 
 	glutSwapBuffers();
