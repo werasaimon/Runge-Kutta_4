@@ -447,6 +447,8 @@ TPhysicsGridSimulate DynamicGrid(gravity);
 
 float TimeStep = 1.0 / 60.0;
 
+bool Pause = true;
+
 // Initialization
 void initCamera()
 {
@@ -523,6 +525,8 @@ void InitPhysicsParticles()
 void display()
 {
 
+    glClearColor(0.2f, 0.2f, 0.2f, 0.0f);
+
 	glViewport(0, 0, Width , Height );
 
 
@@ -560,6 +564,20 @@ void display()
     string[64];
     sprintf(string, "MOUSE_BUTTON_RIGHT : Random-Velocity");
     printtext(10,Height - 40,string);
+
+
+    if(Pause)
+    {
+        string[64];
+        sprintf(string, "KEY_SPACE : Simulate: OFF");
+        printtext(10,Height - 60,string);
+    }
+    else
+    {
+        string[64];
+        sprintf(string, "KEY_SPACE : Simulate: ON");
+        printtext(10,Height - 60,string);
+    }
 
 
 	glutSwapBuffers();
@@ -601,7 +619,7 @@ void UpdateTime(void)
 
 
 	//************ Update Physics *******//
-    DynamicGrid.UpdateRungeKutta4(TimeStep);
+   if(!Pause) DynamicGrid.UpdateRungeKutta4(TimeStep);
 
 };
 
@@ -674,7 +692,25 @@ void mouseMotion(int x, int y)
 
 }
 
+void processNormalKeys(unsigned char key, int x, int y)
+{
 
+    switch(key)
+    {
+      case 27 : exit(0); break;
+      case ' ' : Pause = !Pause; break;
+    }
+
+}
+
+
+void processSpecialKeys(int key, int x, int y) {
+
+    switch(key)
+    {
+
+    }
+}
 
 
 
@@ -702,6 +738,10 @@ int main(int argc, char** argv)
 	glutReshapeFunc(reshape);
 	glutMouseFunc(mouseButton);
 	glutMotionFunc(mouseMotion);
+
+    // here are the new entries
+    glutKeyboardFunc(processNormalKeys);
+    glutSpecialFunc(processSpecialKeys);
 
 
 	glutIdleFunc(UpdateTime);
